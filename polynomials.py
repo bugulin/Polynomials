@@ -108,5 +108,4 @@ class Polynomial:
             
 p = Polynomial()
 
-assert p.compute("( 5 * 10 ) / 2 + ( 11 * 2 / 10 ) - 2") == "25.2", "Without X"
-assert p.compute("x ^ 5 + 2") == "x^5 + 2", "First one!"
+

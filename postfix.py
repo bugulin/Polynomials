@@ -40,6 +40,7 @@ def to_postfix(text):
                 operators.append("^")
         else:
             output.append(t)
+        
     if len(operators):
         return " ".join(output) + " " + " ".join(operators[::-1])
     else:
@@ -49,13 +50,21 @@ def parse(text):
     result = []
     t = ""
     for i in text.replace(" ", ""):
-        if i in ["+", "-", "*", "/", "(", ")", "^"]:
+        if i in ["+", "-"]:
             if t != "":
                 result.append(t)
                 result.append(i)
                 t = ""
             else:
-                t += i
+                if not len(result) or result[-1] in ["*", "/", "(", "^"]:
+                    t += i
+                else:
+                    result.append(i)
+        elif i in ["*", "/", "(", ")", "^"]:
+            if t != "":
+                result.append(t)
+                t = ""
+            result.append(i)
         elif i == "x":
             if len(t):
                 result.append(t)
@@ -67,9 +76,3 @@ def parse(text):
     if t != "":
         result.append(t)
     return result
-
-assert to_postfix("5 + 1") == "5 1 +", "6"
-assert to_postfix("2 * 6 + ( 5 - 2 )") == "2 6 * 5 2 - +", "second one"
-assert to_postfix("15 - ( 2 + 9 * 2 ) * 11 - ( 15 + 3 ) / 3") == "15 2 9 2 * + 11 * - 15 3 + 3 / -", "15 2 9 2 * ..."
-assert to_postfix("1 + 20 - ( 2 - 5 + 5 )") == "1 20 + 2 5 - 5 + -", "Ach! Jak já ty závorky nenávidím!"
-assert to_postfix("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3") == "3 4 2 * 1 5 - 2 ^ 3 ^ / +", "Ty mocniny!"
