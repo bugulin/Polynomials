@@ -1,7 +1,7 @@
 def to_postfix(text):
     output = []
     operators = []
-    for t in parse(text):
+    for t in text:
         if t in ("+", "-"):
             if len(operators):
                 for i in range(len(operators))[::-1]:
@@ -42,9 +42,9 @@ def to_postfix(text):
             output.append(t)
         
     if len(operators):
-        return " ".join(output) + " " + " ".join(operators[::-1])
+        return output + operators[::-1]
     else:
-        return " ".join(output)
+        return output
 
 def parse(text):
     result = []
@@ -64,6 +64,8 @@ def parse(text):
             if t != "":
                 result.append(t)
                 t = ""
+            elif i == "(" and len(result) and result[-1] == ")":
+                result.append("*")
             result.append(i)
         elif i == "x":
             if len(t):

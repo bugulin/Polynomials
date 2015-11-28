@@ -1,7 +1,10 @@
-from postfix import to_postfix, parse
-from polynomials import p
+#!/usr/bin/python3
+from parse import to_postfix, parse
+from polynomials import Polynomial
 
-pol = p.compute
+p = Polynomial()
+def pol(t):
+    return p.compute(to_postfix(parse(t)))
 
 
 # parse
@@ -9,6 +12,7 @@ print('PARSE')
 
 assert parse('2') == ['2'], 'Jedno číslo'
 assert parse('50 * 2') == ['50', '*', '2'], 'Násobení'
+assert parse('(x+2)(3x+2) + 20') == ['(', 'x', '+', '2', ')', '*', '(', '3', '*', 'x', '+', '2', ')', '+', '20'], '(...)(...)'
 assert parse('2 x^2') == ['2', '*', 'x', '^', '2'], 'ax^n'
 assert parse('2*x+3 - 5^2') == ['2', '*', 'x', '+', '3', '-', '5', '^', '2'], 'Pokročilejší'
 assert parse('2x * (5 + 10 * 2x) / 2') == ['2', '*', 'x', '*', '(', '5', '+', '10', '*', '2', '*', 'x', ')', '/', '2'], 'I dělení'
@@ -20,11 +24,12 @@ print('→ OK')
 # postfix
 print('POSTFIX')
 
-assert to_postfix('5 + 1') == '5 1 +', 'Sčítání'
-assert to_postfix('2 * 6 + ( 5 - 2 )') == '2 6 * 5 2 - +', 'Násobení a závorky'
-assert to_postfix('1 + 20 - ( 2 - 5 + 5 )') == '1 20 + 2 5 - 5 + -', 'Ach! Jak já ty závorky nenávidím!'
-assert to_postfix('15 - ( 2 + 9 * 2 ) * 11 - ( 15 + 3 ) / 3') == '15 2 9 2 * + 11 * - 15 3 + 3 / -', 'Trochu složitější'
-assert to_postfix('3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3') == '3 4 2 * 1 5 - 2 ^ 3 ^ / +', 'Ty mocniny!'
+assert to_postfix(['0']) == ['0'], 'Jedno číslo'
+assert to_postfix(['5', '+', '1']) == ['5', '1', '+'], 'Sčítání'
+assert to_postfix(['2', '*', '6', '+', '(', '5', '-', '2', ')']) == ['2', '6', '*', '5', '2', '-', '+'], 'Násobení a závorky'
+assert to_postfix(['1', '+', '20', '-', '(', '2', '-', '5', '+', '5', ')']) == ['1', '20', '+', '2', '5', '-', '5', '+', '-'], 'Ach! Jak já ty závorky nenávidím!'
+assert to_postfix(['15', '-', '(', '2', '+', '9', '*', '2', ')', '*', '11', '-', '(', '15', '+', '3', ')', '/', '3']) == ['15', '2', '9', '2', '*', '+', '11', '*', '-', '15', '3', '+', '3', '/', '-'], 'Trochu složitější'
+assert to_postfix(['3', '+', '4', '*', '2', '/', '(', '1', '-', '5', ')', '^', '2', '^', '3']) == ['3', '4', '2', '*', '1', '5', '-', '2', '^', '3', '^', '/', '+'], 'Ty mocniny!'
 
 print('→ OK')
 

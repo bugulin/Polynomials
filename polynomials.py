@@ -1,10 +1,6 @@
-from postfix import to_postfix
-
 class Polynomial:
     def compute(self, text):
         self.stack = []
-        text = to_postfix(text)
-        text = text.split(" ")
         for t in text:
             if t == "+":
                 self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
@@ -95,7 +91,7 @@ class Polynomial:
     def exponent(self):
         b = self.stack.pop()
         a = self.stack.pop()
-        if b[0][1] == 0 and a[0][1] == 1:
+        if len(a) == 1 and b[0][1] == 0 and a[0][1] == 1:
             return [(a[0][0], a[0][1]-1+b[0][0])]
         elif b[0][1] == 0: # (a+b+c)^n
             result = a[:]
@@ -109,7 +105,3 @@ class Polynomial:
         else:
             print("^ ( ... )")
             raise SyntaxError("To ještě neumím!")
-            
-p = Polynomial()
-
-

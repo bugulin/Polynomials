@@ -1,4 +1,8 @@
-from polynomials import p
+#!/usr/bin/python3
+from parse import parse, to_postfix
+from polynomials import Polynomial
+
+p = Polynomial()
 
 print("Polynomy 1.3")
 print("Zadávej polynomy pro jejich výpočet. Pro ukončení zadej prázdný řetězec.")
@@ -10,7 +14,9 @@ while True:
         break
     else:
         try:
-            print("\x1b[32m=", p.compute(i), "\x1b[0m")
+            print("\x1b[32m=", p.compute(to_postfix(parse(i))), "\x1b[0m")
         except:
-            print("\x1b[31mChyba ve vstupu!\x1b[0m")
+            print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
     print()
+
+print("\x1b[33m! Konzole ukončena.\x1b[0m")
