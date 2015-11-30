@@ -56,7 +56,6 @@ class Polynomial:
         return output[:-1]
 
     def reduce(self, polynomial):
-        #print(" + ", polynomial)
         m = -1 * min([i[1] for i in polynomial])
         l = m + max([i[1] for i in polynomial])
         powers = [0] * (l+1)

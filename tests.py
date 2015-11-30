@@ -55,6 +55,7 @@ assert pol('(x^3 + 2x) * (4x^2 + 7x)') == '4x^5 + 7x^4 + 8x^3 + 14x^2', '(...) *
 assert pol('5 ^ 3') == '125', 'Mocniny'
 assert pol('(5*2 + x^2) ^ 2') == 'x^4 + 20x^2 + 100', 'Závorka na druhou'
 
+assert pol('50/5') == '10', 'Primitivní dělení'
 assert pol('(10x^2 + 5x + 20)/5') == '2x^2 + x + 4', 'Dělení 1'
 assert pol('(4x^3 + 8x^2 + 7)/(2x^2)') == '2x + 4 + 3.5x^-2', 'Dělení 2'
 
