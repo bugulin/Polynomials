@@ -5,18 +5,20 @@ class Polynomial:
             if t == "+":
                 self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
             elif t == "-":
-                self.stack.append(self.subtraction())
+                self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
             elif t == "*":
-                self.stack.append(self.multiplication())
+                self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
             elif t == "/":
-                self.stack.append(self.division())
+                self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
             elif t == "^":
-                self.stack.append(self.exponent())
+                self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
             else:
                 if "x" not in t:
                     self.stack.append([(int(t), 0)])
                 else:
                     self.stack.append([(int(t[:-1] or "1"), 1)])
+
+            #print(self.stack)
         return self.print(self.stack[0])
 
     def print(self, polynomial):
@@ -70,41 +72,30 @@ class Polynomial:
     
     def addition(self, b, a):
         return self.reduce(a + b)
-    def subtraction(self):
-        b = self.stack.pop()
-        a = self.stack.pop()
+    def subtraction(self, b, a):
         return self.reduce(a + [(-1 * n[0], n[1]) for n in b])
-    def multiplication(self):
-        b = self.stack.pop()
-        a = self.stack.pop()
+    def multiplication(self, b, a):
         result = []
         for n1 in a:
             for n2 in b:
                 result.append((n1[0]*n2[0], n1[1]+n2[1]))
-        return result
-    def division(self):
+        return self.reduce(result)
+    def division(self, b, a):
         # nefunguje
-        b = self.stack.pop()
-        a = self.stack.pop()
         result = []
         for n1 in a:
             for n2 in b:
                 result.append((n1[0]/n2[0], n1[1]-n2[1]))
         return result
-    def exponent(self):
-        b = self.stack.pop()
-        a = self.stack.pop()
+    def exponent(self, b, a):
         if len(a) == 1 and b[0][1] == 0 and a[0][1] == 1:
             return [(a[0][0], a[0][1]-1+b[0][0])]
         elif b[0][1] == 0: # (a+b+c)^n
             result = a[:]
             for i in range(b[0][0]-1):
-                self.stack.append(result)
-                self.stack.append(a)
-                self.stack.append(self.multiplication())
-                result = self.stack.pop()
+                result = self.multiplication(a, result)
                 #print("-", result)
-            return result
+            return self.reduce(result)
         else:
             print("^ ( ... )")
             raise SyntaxError("To ještě neumím!")
