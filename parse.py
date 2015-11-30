@@ -64,7 +64,7 @@ def parse(text):
             if t != "":
                 result.append(t)
                 t = ""
-            elif i == "(" and len(result) and result[-1] == ")":
+            if i == "(" and len(result) and result[-1] not in ["+", "-", "*", "/", "^", "("]:
                 result.append("*")
             result.append(i)
         elif i == "x":
