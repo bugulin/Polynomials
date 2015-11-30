@@ -4,7 +4,7 @@ from polynomials import Polynomial
 
 p = Polynomial()
 
-print("Polynomy 1.3")
+print("Polynomy 1.5")
 print("Zadávej polynomy pro jejich výpočet. Pro ukončení zadej prázdný řetězec.")
 print("")
 

@@ -30,6 +30,8 @@ class Polynomial:
             p[n+m] += x
         for i in range(l+1)[::-1]:
             x = p[i]
+            if x == int(x):
+                x = int(x)
             if x == 0:
                 continue
             elif x < 0:
@@ -39,6 +41,7 @@ class Polynomial:
                 sign = "+ "
             if x == 1 and i-m != 0:
                 x = ""
+            
             if i-m == 0:
                 output += sign + str(x)
             elif i-m == 1:
