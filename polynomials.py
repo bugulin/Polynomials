@@ -1,6 +1,12 @@
 class Polynomial:
     def compute(self, text):
         self.stack = []
+        self.variable = "".join([str(not x.isalpha() or x) for x in text]).replace("True", "")
+        if len(self.variable):
+            self.variable = self.variable[0]
+        else:
+            self.variable = "x"
+        
         for t in text:
             if t == "+":
                 self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
@@ -13,7 +19,7 @@ class Polynomial:
             elif t == "^":
                 self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
             else:
-                if "x" not in t:
+                if self.variable not in t:
                     self.stack.append([(int(t), 0)])
                 else:
                     self.stack.append([(int(t[:-1] or "1"), 1)])
@@ -47,9 +53,9 @@ class Polynomial:
             if i-m == 0:
                 output += sign + str(x)
             elif i-m == 1:
-                output += sign + str(x) + "x"
+                output += sign + str(x) + self.variable
             else:
-                output += sign + str(x) + "x^" + str(i-m)
+                output += sign + str(x) + self.variable+"^" + str(i-m)
             output += " "
         if output[0] == "+":
             output = output[2:]

@@ -13,10 +13,10 @@ while True:
     if i == "":
         break
     else:
-        try:
-            print("\x1b[32m=", p.compute(to_postfix(parse(i))), "\x1b[0m")
-        except:
-            print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
+        #try:
+        print("\x1b[32m=", p.compute(to_postfix(parse(i))), "\x1b[0m")
+        #except:
+        #    print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
     print()
 
 print("\x1b[33m! Konzole ukončena.\x1b[0m")
