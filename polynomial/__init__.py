@@ -1,6 +1,2 @@
-from .polynomials import Polynomial
-
-p = Polynomial()
-
-def new(text):
-    print("Created new polynomial")
+from .main import new
+#from .parse import to_postfix, parse
