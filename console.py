@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-from parse import parse, to_postfix
-from polynomials import Polynomial
+from polynomial import *
+#from polynomial.parse import parse, to_postfix
+#from polynomial.polynomials import Polynomial
 
 p = Polynomial()
 

@@ -1,3 +1,5 @@
+from parse import parse, to_postfix
+
 class Polynomial:
     def compute(self, text):
         self.stack = []
@@ -25,7 +27,7 @@ class Polynomial:
                     self.stack.append([(int(t[:-1] or "1"), 1)])
 
             #print(self.stack)
-        return self.print(self.stack[0])
+        return self.stack[0]
 
     def print(self, polynomial):
         sign = ""
@@ -104,3 +106,7 @@ class Polynomial:
         else:
             print("^ ( ... )")
             raise SyntaxError("To ještě neumím!")
+
+p = Polynomial()
+def new(text):
+    return p.compute(to_postfix(parse(text)))
