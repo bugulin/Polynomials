@@ -6,8 +6,16 @@ class Polynomial:
         self.numerator = n
         self.denominator = d
 
+    def invert(self):
+        self.numerator, self.denominator = self.denominator, self.numerator
+
     def plus(self, polynomial):
         self.numerator += polynomial.numerator
+
+    def minus(self, polynomial):
+        for i in range(len(polynomial.numerator)):
+            polynomial.numerator[i][0] *= -1
+        self.plus(polynomial)
 
     def times(self, polynomial):
         result = []
@@ -18,7 +26,19 @@ class Polynomial:
                     c.append(a[i]+b[i])
                 result.append(c)
         self.numerator = result
-                
+
+        result = []
+        for a in self.denominator:
+            for b in polynomial.denominator:
+                c = [a[0]*b[0]]
+                for i in range(1, self.length):
+                    c.append(a[i]+b[i])
+                result.append(c)
+        self.denominator = result
+
+    def divided(self, polynomial):
+        polynomial.invert()
+        self.times(polynomial)
         
     def __str__(self):
         return str(self.numerator) + " / " + str(self.denominator)
@@ -39,7 +59,9 @@ class Calcurator:
                 a.plus(b)
                 #self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
             elif m == "-":
-                pass
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.minus(b)
                 #self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
             elif m == "*":
                 b = self.stack.pop()
@@ -47,23 +69,25 @@ class Calcurator:
                 a.times(b)
                 #self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
             elif m == "/":
-                pass
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.divided(b)
                 #self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
             elif m == "^":
                 pass
                 #self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
             else:
                 try:
-                    self.stack.append(Polynomial([[int(m)]+[0]*len(self.variables)], [1] + [0]*len(self.variables)))
+                    self.stack.append(Polynomial([[int(m)]+[0]*len(self.variables)], [[1] + [0]*len(self.variables)]))
                 except ValueError:
                     a = [1] + [0]*len(self.variables)
                     a[self.variables.index(m)+1] = 1
-                    self.stack.append(Polynomial([a], [1] + [0]*len(self.variables)))
+                    self.stack.append(Polynomial([a], [[1] + [0]*len(self.variables)]))
 
             #print(self.stack)
         for s in self.stack:
             print(s)
-        return self.stack
+        #return self.stack
 
     def print(self, polynomial):
         sign = ""
