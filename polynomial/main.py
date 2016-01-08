@@ -1,33 +1,69 @@
 from parse import parse, to_postfix
 
 class Polynomial:
-    def compute(self, text):
-        self.stack = []
-        self.variable = "".join([str(not x.isalpha() or x) for x in text]).replace("True", "")
-        if len(self.variable):
-            self.variable = self.variable[0]
-        else:
-            self.variable = "x"
+    def __init__(self, n, d=1):
+        self.length = len(n[0])
+        self.numerator = n
+        self.denominator = d
+
+    def plus(self, polynomial):
+        self.numerator += polynomial.numerator
+
+    def times(self, polynomial):
+        result = []
+        for a in self.numerator:
+            for b in polynomial.numerator:
+                c = [a[0]*b[0]]
+                for i in range(1, self.length):
+                    c.append(a[i]+b[i])
+                result.append(c)
+        self.numerator = result
+                
         
-        for t in text:
-            if t == "+":
-                self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
-            elif t == "-":
-                self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
-            elif t == "*":
-                self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
-            elif t == "/":
-                self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
-            elif t == "^":
-                self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
+    def __str__(self):
+        return str(self.numerator) + " / " + str(self.denominator)
+
+class Calcurator:
+    def compute(self, pol):
+        self.stack = []
+        self.variables = []
+        for p in pol:
+            if p.isalpha() and p not in self.variables:
+                self.variables.append(p)
+        
+        for m in pol:
+            print(m)
+            if m == "+":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.plus(b)
+                #self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
+            elif m == "-":
+                pass
+                #self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
+            elif m == "*":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.times(b)
+                #self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
+            elif m == "/":
+                pass
+                #self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
+            elif m == "^":
+                pass
+                #self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
             else:
-                if self.variable not in t:
-                    self.stack.append([(int(t), 0)])
-                else:
-                    self.stack.append([(int(t[:-1] or "1"), 1)])
+                try:
+                    self.stack.append(Polynomial([[int(m)]+[0]*len(self.variables)], [1] + [0]*len(self.variables)))
+                except ValueError:
+                    a = [1] + [0]*len(self.variables)
+                    a[self.variables.index(m)+1] = 1
+                    self.stack.append(Polynomial([a], [1] + [0]*len(self.variables)))
 
             #print(self.stack)
-        return self.stack[0]
+        for s in self.stack:
+            print(s)
+        return self.stack
 
     def print(self, polynomial):
         sign = ""
@@ -107,6 +143,6 @@ class Polynomial:
             print("^ ( ... )")
             raise SyntaxError("To ještě neumím!")
 
-p = Polynomial()
+c = Calcurator()
 def new(text):
-    return p.compute(to_postfix(parse(text)))
+    return c.compute(to_postfix(parse(text)))
