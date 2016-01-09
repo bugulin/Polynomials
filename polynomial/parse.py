@@ -72,7 +72,7 @@ def parse(text):
                 result.append(t)
                 t = ""
                 result.append("*")
-            elif result[-1] not in ["+", "-", "*", "/", "^"]:
+            elif len(result) and result[-1] not in ["+", "-", "*", "/", "^"]:
                 result.append("*")
             result.append(i)
         else:

@@ -36,9 +36,38 @@ class Polynomial:
                 result.append(c)
         self.denominator = result
 
-    def divided(self, polynomial):
+    def divided_by(self, polynomial):
         polynomial.invert()
         self.times(polynomial)
+
+    def to_the(self, polynomial):
+        if len(polynomial.numerator) == 1:
+            if sum(polynomial.numerator[0][1:]) == 0:
+                if polynomial.numerator[0][0] == 0:
+                    self.numerator = [[0] + [0]*self.length-1]
+                else:
+                    for i in range(polynomial.numerator[0][0]-1):
+                        self.times(self)
+        else:
+            print("It's very hard!")
+
+    def reduce(self):
+        numerator = {}
+        for m in self.numerator:
+            try:
+                result[tuple(m[1:])] += m[0]
+            except KeyError:
+                result[tuple(m[1:])] = m[0]
+
+        denominator = {}
+        for m in self.denomirator:
+            try:
+                result[tuple(m[1:])] += m[0]
+            except KeyError:
+                result[tuple(m[1:])] = m[0]
+
+        # ...
+        print(result)
         
     def __str__(self):
         return str(self.numerator) + " / " + str(self.denominator)
@@ -71,10 +100,12 @@ class Calcurator:
             elif m == "/":
                 b = self.stack.pop()
                 a = self.stack[-1]
-                a.divided(b)
+                a.divided_by(b)
                 #self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
             elif m == "^":
-                pass
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.to_the(b)
                 #self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
             else:
                 try:
@@ -87,6 +118,7 @@ class Calcurator:
             #print(self.stack)
         for s in self.stack:
             print(s)
+            s.reduce()
         #return self.stack
 
     def print(self, polynomial):
@@ -135,37 +167,7 @@ class Calcurator:
             x = powers[n]
             if x != 0:
                 output.append((x, n-m))
-        return output
-    
-    def addition(self, b, a):
-        return self.reduce(a + b)
-    def subtraction(self, b, a):
-        return self.reduce(a + [(-1 * n[0], n[1]) for n in b])
-    def multiplication(self, b, a):
-        result = []
-        for n1 in a:
-            for n2 in b:
-                result.append((n1[0]*n2[0], n1[1]+n2[1]))
-        return self.reduce(result)
-    def division(self, b, a):
-        # nefunguje
-        result = []
-        for n1 in a:
-            for n2 in b:
-                result.append((n1[0]/n2[0], n1[1]-n2[1]))
-        return result
-    def exponent(self, b, a):
-        if len(a) == 1 and b[0][1] == 0 and a[0][1] == 1:
-            return [(a[0][0], a[0][1]-1+b[0][0])]
-        elif b[0][1] == 0: # (a+b+c)^n
-            result = a[:]
-            for i in range(b[0][0]-1):
-                result = self.multiplication(a, result)
-                #print("-", result)
-            return self.reduce(result)
-        else:
-            print("^ ( ... )")
-            raise SyntaxError("To ještě neumím!")
+        return outpu
 
 c = Calcurator()
 def new(text):
