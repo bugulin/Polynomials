@@ -1,33 +1,125 @@
 from parse import parse, to_postfix
 
 class Polynomial:
-    def compute(self, text):
-        self.stack = []
-        self.variable = "".join([str(not x.isalpha() or x) for x in text]).replace("True", "")
-        if len(self.variable):
-            self.variable = self.variable[0]
-        else:
-            self.variable = "x"
-        
-        for t in text:
-            if t == "+":
-                self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
-            elif t == "-":
-                self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
-            elif t == "*":
-                self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
-            elif t == "/":
-                self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
-            elif t == "^":
-                self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
-            else:
-                if self.variable not in t:
-                    self.stack.append([(int(t), 0)])
+    def __init__(self, n, d=1):
+        self.length = len(n[0])
+        self.numerator = n
+        self.denominator = d
+
+    def invert(self):
+        self.numerator, self.denominator = self.denominator, self.numerator
+
+    def plus(self, polynomial):
+        self.numerator += polynomial.numerator
+
+    def minus(self, polynomial):
+        for i in range(len(polynomial.numerator)):
+            polynomial.numerator[i][0] *= -1
+        self.plus(polynomial)
+
+    def times(self, polynomial):
+        result = []
+        for a in self.numerator:
+            for b in polynomial.numerator:
+                c = [a[0]*b[0]]
+                for i in range(1, self.length):
+                    c.append(a[i]+b[i])
+                result.append(c)
+        self.numerator = result
+
+        result = []
+        for a in self.denominator:
+            for b in polynomial.denominator:
+                c = [a[0]*b[0]]
+                for i in range(1, self.length):
+                    c.append(a[i]+b[i])
+                result.append(c)
+        self.denominator = result
+
+    def divided_by(self, polynomial):
+        polynomial.invert()
+        self.times(polynomial)
+
+    def to_the(self, polynomial):
+        if len(polynomial.numerator) == 1:
+            if sum(polynomial.numerator[0][1:]) == 0:
+                if polynomial.numerator[0][0] == 0:
+                    self.numerator = [[0] + [0]*self.length-1]
                 else:
-                    self.stack.append([(int(t[:-1] or "1"), 1)])
+                    for i in range(polynomial.numerator[0][0]-1):
+                        self.times(self)
+        else:
+            print("It's very hard!")
+
+    def reduce(self):
+        numerator = {}
+        for m in self.numerator:
+            try:
+                result[tuple(m[1:])] += m[0]
+            except KeyError:
+                result[tuple(m[1:])] = m[0]
+
+        denominator = {}
+        for m in self.denomirator:
+            try:
+                result[tuple(m[1:])] += m[0]
+            except KeyError:
+                result[tuple(m[1:])] = m[0]
+
+        # ...
+        print(result)
+        
+    def __str__(self):
+        return str(self.numerator) + " / " + str(self.denominator)
+
+class Calcurator:
+    def compute(self, pol):
+        self.stack = []
+        self.variables = []
+        for p in pol:
+            if p.isalpha() and p not in self.variables:
+                self.variables.append(p)
+        
+        for m in pol:
+            print(m)
+            if m == "+":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.plus(b)
+                #self.stack.append(self.addition(self.stack.pop(), self.stack.pop()))
+            elif m == "-":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.minus(b)
+                #self.stack.append(self.subtraction(self.stack.pop(), self.stack.pop()))
+            elif m == "*":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.times(b)
+                #self.stack.append(self.multiplication(self.stack.pop(), self.stack.pop()))
+            elif m == "/":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.divided_by(b)
+                #self.stack.append(self.division(self.stack.pop(), self.stack.pop()))
+            elif m == "^":
+                b = self.stack.pop()
+                a = self.stack[-1]
+                a.to_the(b)
+                #self.stack.append(self.exponent(self.stack.pop(), self.stack.pop()))
+            else:
+                try:
+                    self.stack.append(Polynomial([[int(m)]+[0]*len(self.variables)], [[1] + [0]*len(self.variables)]))
+                except ValueError:
+                    a = [1] + [0]*len(self.variables)
+                    a[self.variables.index(m)+1] = 1
+                    self.stack.append(Polynomial([a], [[1] + [0]*len(self.variables)]))
 
             #print(self.stack)
-        return self.stack[0]
+        for s in self.stack:
+            print(s)
+            s.reduce()
+        #return self.stack
 
     def print(self, polynomial):
         sign = ""
@@ -75,38 +167,8 @@ class Polynomial:
             x = powers[n]
             if x != 0:
                 output.append((x, n-m))
-        return output
-    
-    def addition(self, b, a):
-        return self.reduce(a + b)
-    def subtraction(self, b, a):
-        return self.reduce(a + [(-1 * n[0], n[1]) for n in b])
-    def multiplication(self, b, a):
-        result = []
-        for n1 in a:
-            for n2 in b:
-                result.append((n1[0]*n2[0], n1[1]+n2[1]))
-        return self.reduce(result)
-    def division(self, b, a):
-        # nefunguje
-        result = []
-        for n1 in a:
-            for n2 in b:
-                result.append((n1[0]/n2[0], n1[1]-n2[1]))
-        return result
-    def exponent(self, b, a):
-        if len(a) == 1 and b[0][1] == 0 and a[0][1] == 1:
-            return [(a[0][0], a[0][1]-1+b[0][0])]
-        elif b[0][1] == 0: # (a+b+c)^n
-            result = a[:]
-            for i in range(b[0][0]-1):
-                result = self.multiplication(a, result)
-                #print("-", result)
-            return self.reduce(result)
-        else:
-            print("^ ( ... )")
-            raise SyntaxError("To ještě neumím!")
+        return outpu
 
-p = Polynomial()
+c = Calcurator()
 def new(text):
-    return p.compute(to_postfix(parse(text)))
+    return c.compute(to_postfix(parse(text)))

@@ -67,10 +67,12 @@ def parse(text):
             if i == "(" and len(result) and result[-1] not in ["+", "-", "*", "/", "^", "("]:
                 result.append("*")
             result.append(i)
-        elif i == "x":
+        elif i.isalpha():
             if len(t):
                 result.append(t)
                 t = ""
+                result.append("*")
+            elif len(result) and result[-1] not in ["+", "-", "*", "/", "^"]:
                 result.append("*")
             result.append(i)
         else:
