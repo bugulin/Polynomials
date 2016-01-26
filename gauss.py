@@ -4,7 +4,7 @@ class Matrix:
 
     def run(self, *matrix):
         self.matrix = matrix
-        self.vars = len(matrix[0]-1)
+        self.vars = len(matrix[0])-1
         self.sort()
         
         for y in range(self.vars-1):
@@ -19,10 +19,14 @@ class Matrix:
                         self.matrix[i][n] *= bi
                     for n in range(self.vars+1):
                         self.matrix[i][n] -= b[n]
+
+                    if self.matrix[i] == [0]*(self.vars+1):
+                        del self.matrix[i]
         print(self)
 
-        if self.matrix.count([0]*(self.vars+1)):
-            print("...")
+        if len(self.matrix) < self.vars:
+            print("Žádné řešení!")
+            return 0
 
         result = [0]*self.vars
         c = self.vars-1
@@ -39,16 +43,11 @@ class Matrix:
         output = []
         chars = "xyzabcdefghijklmno"
         for i in range(self.vars):
-<<<<<<< HEAD
-            print(chars[i], "=", result[i])
-        
-=======
             r = result[i]
             if r == int(r):
                 r = int(r)
             output.append(chars[i] + " = " + str(r))
         print(", ".join(output))
->>>>>>> 156e60ee1073463ffbcb5799950d6d6002cf881a
         return result[::-1]
 
     def n(self, a, b):
@@ -100,12 +99,10 @@ a = Matrix()
       [3, 8, 1, 50],
       [0, 3, 3, 27])"""
 
-<<<<<<< HEAD
 #a.matrix.append([8, 80, 7, 155])
 #a.matrix.append([10, 30, 5, 30])
 #a.matrix.append([31, 11, 5, 0])
-a.run()
-=======
 a.run([4, 1, 5],
-      [12, 3, 15])
->>>>>>> 156e60ee1073463ffbcb5799950d6d6002cf881a
+      [12, 3, 15],
+      [1, 4, 10],
+      [2, 8, 20])
