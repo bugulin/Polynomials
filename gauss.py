@@ -33,8 +33,8 @@ class Matrix:
 
         chars = "xyzabcdefghijklmno"
         for i in range(self.vars):
-            print(chars[i], "=", result[i], end=", ")
-        print()
+            print(chars[i], "=", result[i])
+        
         return result[::-1]
 
     def n(self, a, b):
@@ -79,3 +79,4 @@ a.matrix.append([0, 3, 3, 27])
 #a.matrix.append([8, 80, 7, 155])
 #a.matrix.append([10, 30, 5, 30])
 #a.matrix.append([31, 11, 5, 0])
+a.run()
