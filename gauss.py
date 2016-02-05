@@ -4,10 +4,13 @@ class Matrix:
 
     def run(self, *matrix):
         self.matrix = matrix
-        self.vars = len(matrix[0]-1)
+        self.vars = len(matrix[0])-1
+        self.reduce()
+        print(self)
+        print("=======")
         self.sort()
         
-        for y in range(self.vars-1):
+        for y in range(len(self.matrix)-1):
             for i in range(self.vars-1-y):
                 if self.matrix[i][y]:
                     b = self.matrix[i+1].copy()
@@ -21,9 +24,13 @@ class Matrix:
                         self.matrix[i][n] -= b[n]
         print(self)
 
-        if self.matrix.count([0]*(self.vars+1)):
+        while self.matrix.count([0]*(self.vars+1)):
             print("...")
-
+            self.matrix.remove([0]*(self.vars+1))
+        if len(self.matrix) < self.vars:
+            print("Žádné řešení!")
+            return 0
+        
         result = [0]*self.vars
         c = self.vars-1
         for i in range(0, self.vars):
@@ -57,6 +64,26 @@ class Matrix:
             elif multiple_of_b > multiple_of_a:
                 multiple_of_a += abs_a
         return multiple_of_a/a, multiple_of_b/b
+
+    def reduce(self):
+        new_matrix = []
+        for e in range(len(self.matrix)):
+            divisors = [{1} for i in range(self.vars+1)]
+            for i, n in enumerate(self.matrix[e]):
+                for d in range(2, n+1):
+                    if n%d == 0:
+                        divisors[i].add(d)
+            hds = divisors[0].copy()
+            for i in divisors[1:]:
+                hds = hds.intersection(i)
+            hd = max(hds)
+            if hd != 1:
+                new = []
+                for i in range(self.vars+1):
+                    new.append(self.matrix[e][i] / hd)
+                if not new_matrix.count(new):
+                    new_matrix.append(new)
+        self.matrix = new_matrix
 
     def sort(self):
         new_m = [tuple(map(lambda x: abs(x), m)) + (i,) for i, m in enumerate(self.matrix)]
@@ -95,5 +122,7 @@ a = Matrix()
       [3, 8, 1, 50],
       [0, 3, 3, 27])"""
 
-a.run([4, 1, 5],
+a.run([8, 2, 10],
+      [4, 1, 5],
+      [2, 0, 2],
       [12, 3, 15])
