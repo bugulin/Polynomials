@@ -7,11 +7,8 @@ class Matrix:
         self.vars = len(matrix[0])-1
 
         self.reduce()
-        print(self)
-        print("=======")
-
         self.sort()
-        
+
         for y in range(len(self.matrix)-1):
             for i in range(self.vars-1-y):
                 if self.matrix[i][y]:
@@ -27,39 +24,36 @@ class Matrix:
 
                     if self.matrix[i] == [0]*(self.vars+1):
                         del self.matrix[i]
-        print(self)
 
+        # Mazání matic typu [0, 0, 0]
         while self.matrix.count([0]*(self.vars+1)):
-            print("...")
             self.matrix.remove([0]*(self.vars+1))
+
+        # Méně rovnic než je proměnných
         if len(self.matrix) < self.vars:
-            print("Žádné řešení!")
-            return 0
-        
-        if len(self.matrix) < self.vars:
-            print("Žádné řešení!")
+            print(self)
+            print("Závislá proměnná")
             return 0
 
+        # Vypočítání jednotlivých proměnných
         result = [0]*self.vars
         c = self.vars-1
         for i in range(0, self.vars):
             a = self.matrix[i]
-            #print(a)
             for n in range(self.vars-i, self.vars):
-                #print("-", a[n])
                 a[self.vars] -= a[n]*result[c-n]
                 a[n] = 0
             result[i] = a[self.vars]/a[c-i]
-        print(self)
 
+        # Tisk výsledku jako proměnné
         output = []
         chars = "xyzabcdefghijklmno"
         for i in range(self.vars):
             r = result[i]
             if r == int(r):
                 r = int(r)
-            output.append(chars[i] + " = " + str(r))
-        print(", ".join(output))
+            output.append(chars[self.vars-i-1] + " = " + str(r))
+        print(", ".join(output[::-1]))
         return result[::-1]
 
     def n(self, a, b):
@@ -92,6 +86,8 @@ class Matrix:
                     new.append(self.matrix[e][i] / hd)
                 if not new_matrix.count(new):
                     new_matrix.append(new)
+            elif not new_matrix.count(self.matrix[e]):
+                new_matrix.append(self.matrix[e])
         self.matrix = new_matrix
 
     def sort(self):
@@ -101,7 +97,6 @@ class Matrix:
         for m in new_m:
             result.append(self.matrix[m[-1]])
         self.matrix = result
-        print(self)
         
     def __str__(self):
         output = ""
@@ -123,6 +118,7 @@ class Matrix:
             else:
                 output += "/"
             output += "\n"
+
         return output
 
 a = Matrix()
@@ -131,10 +127,9 @@ a = Matrix()
       [3, 8, 1, 50],
       [0, 3, 3, 27])"""
 
-#a.matrix.append([8, 80, 7, 155])
-#a.matrix.append([10, 30, 5, 30])
-#a.matrix.append([31, 11, 5, 0])
-a.run([4, 1, 5],
-      [12, 3, 15],
-      [1, 4, 10],
-      [2, 8, 20])
+"""a.run([4, 1, 6],
+      [12, 3, 18],
+      [7, 3, 13],
+      [105, 45, 195])"""
+a.run([5, 3, 10],
+      [12, 1, 11])
