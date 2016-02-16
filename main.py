@@ -10,6 +10,12 @@ text = " "
 while text != "":
     text = input()
     if "=" in text:
-        rovnice.append(parse(text))
+        rovnice.append(text)
 
-print(rovnice)
+vars = []
+t = "".join(rovnice)
+for i in t:
+    if i.isalpha() and i not in vars:
+        vars.append(i)
+
+print(vars)

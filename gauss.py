@@ -5,9 +5,12 @@ class Matrix:
     def run(self, *matrix):
         self.matrix = matrix
         self.vars = len(matrix[0])-1
+<<<<<<< HEAD
         self.reduce()
         print(self)
         print("=======")
+=======
+>>>>>>> 6b8e577bceabe4ca8bdc37686921c1acd9efb155
         self.sort()
         
         for y in range(len(self.matrix)-1):
@@ -22,8 +25,12 @@ class Matrix:
                         self.matrix[i][n] *= bi
                     for n in range(self.vars+1):
                         self.matrix[i][n] -= b[n]
+
+                    if self.matrix[i] == [0]*(self.vars+1):
+                        del self.matrix[i]
         print(self)
 
+<<<<<<< HEAD
         while self.matrix.count([0]*(self.vars+1)):
             print("...")
             self.matrix.remove([0]*(self.vars+1))
@@ -31,6 +38,12 @@ class Matrix:
             print("Žádné řešení!")
             return 0
         
+=======
+        if len(self.matrix) < self.vars:
+            print("Žádné řešení!")
+            return 0
+
+>>>>>>> 6b8e577bceabe4ca8bdc37686921c1acd9efb155
         result = [0]*self.vars
         c = self.vars-1
         for i in range(0, self.vars):
@@ -122,7 +135,17 @@ a = Matrix()
       [3, 8, 1, 50],
       [0, 3, 3, 27])"""
 
+<<<<<<< HEAD
 a.run([8, 2, 10],
       [4, 1, 5],
       [2, 0, 2],
       [12, 3, 15])
+=======
+#a.matrix.append([8, 80, 7, 155])
+#a.matrix.append([10, 30, 5, 30])
+#a.matrix.append([31, 11, 5, 0])
+a.run([4, 1, 5],
+      [12, 3, 15],
+      [1, 4, 10],
+      [2, 8, 20])
+>>>>>>> 6b8e577bceabe4ca8bdc37686921c1acd9efb155
