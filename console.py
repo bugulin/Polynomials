@@ -1,23 +1,26 @@
 #!/usr/bin/python3
-from polynomial import *
+from main import Console
 #from polynomial.parse import parse, to_postfix
 #from polynomial.polynomials import Polynomial
 
-p = Polynomial()
+c = Console()
 
 print("Polynomy 1.6")
 print("Zadávej polynomy pro jejich výpočet. Pro ukončení zadej prázdný řetězec.")
 print("")
 
+text = []
 while True:
-    i = input("> ")
-    if i == "":
+    text.append(input("> "))
+    if text[-1] == "q":
         break
     else:
-        #try:
-        print("\x1b[32m=", p.compute(to_postfix(parse(i))), "\x1b[0m")
-        #except:
-        #    print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
+        try:
+            if "=" not in text[-1]:
+                print("\x1b[32m=", c.compute(text), "\x1b[0m")
+        except:
+            print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
+            raise
     print()
 
 print("\x1b[33m! Konzole ukončena.\x1b[0m")

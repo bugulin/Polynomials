@@ -10,7 +10,7 @@ def to_postfix(text):
                         del operators[i]
                     else:
                         break
-                        
+
             operators.append(t)
             #print("+ -", t)
         elif t in ["*", "/"]:
@@ -40,7 +40,7 @@ def to_postfix(text):
                 operators.append("^")
         else:
             output.append(t)
-        
+
     if len(operators):
         return output + operators[::-1]
     else:
@@ -72,7 +72,7 @@ def parse(text):
                 result.append(t)
                 t = ""
                 result.append("*")
-            elif len(result) and result[-1] not in ["+", "-", "*", "/", "^"]:
+            elif len(result) and result[-1] not in ["+", "-", "*", "/", "^", "("]:
                 result.append("*")
             result.append(i)
         else:

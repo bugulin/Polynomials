@@ -4,6 +4,7 @@ from .parse import to_postfix, parse
 
 class Calcurator:
     def compute(self, pol, variables):
+        print(pol)
         self.stack = []
         self.variables = variables
 
@@ -45,4 +46,5 @@ class Calcurator:
 
 c = Calcurator()
 def new(text, variables):
+    print(parse(text))
     return c.compute(to_postfix(parse(text)), variables)

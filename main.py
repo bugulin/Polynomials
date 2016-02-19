@@ -59,5 +59,5 @@ class Console:
 
 c = Console()
 print()
-c.compute("5x + 2 * (2x - a)")
+c.compute("5x + y * (x + 12 - x * (y + 5 - 5y))")
 print()
