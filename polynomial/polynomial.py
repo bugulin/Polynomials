@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jan 16 12:38:22 2016
-
-@author: bugulin
-"""
-
 class Polynomial:
     def __init__(self, n, d=1):
         self.length = len(n[0])
@@ -73,6 +66,6 @@ class Polynomial:
 
         # ...
         print(numerator, denominator)
-        
+
     def __str__(self):
         return str(self.numerator) + " / " + str(self.denominator)
