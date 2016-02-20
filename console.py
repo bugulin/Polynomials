@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from main import Console
+from main import Console, pprint
 #from polynomial.parse import parse, to_postfix
 #from polynomial.polynomials import Polynomial
 
@@ -17,10 +17,10 @@ while True:
     else:
         try:
             if "=" not in text[-1]:
-                print("\x1b[32m=", c.compute(text), "\x1b[0m")
+                print("\x1b[32m=", pprint(*c.compute(*text)), "\x1b[0m\n")
+                text = []
         except:
             print("\x1b[31m× Chyba ve vstupu!\x1b[0m")
             raise
-    print()
 
 print("\x1b[33m! Konzole ukončena.\x1b[0m")

@@ -1,2 +1,2 @@
-__pycache__/*.pyc
-polynomials/__pycache__/*.pyc
+__pycache__/
+polynomials/__pycache__/
