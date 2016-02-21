@@ -50,8 +50,6 @@ class Matrix:
         chars = "xyzabcdefghijklmno"
         for i in range(self.vars):
             r = result[i]
-            if r == int(r):
-                r = int(r)
             output.append(chars[self.vars-i-1] + " = " + str(r))
         print(", ".join(output[::-1]))
         return result[::-1]
