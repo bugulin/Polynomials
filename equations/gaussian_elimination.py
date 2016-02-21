@@ -14,7 +14,7 @@ class Matrix:
                 if self.matrix[i][y]:
                     b = self.matrix[i+1].copy()
                     bi, ai = self.n(self.matrix[i][y], b[y])
-                    
+
                     for n in range(self.vars+1):
                         b[n] *= ai
                     for n in range(self.vars+1):
@@ -97,10 +97,10 @@ class Matrix:
         for m in new_m:
             result.append(self.matrix[m[-1]])
         self.matrix = result
-        
+
     def __str__(self):
         output = ""
-        
+
         for b, i in enumerate(self.matrix):
             if b not in [0, len(self.matrix)-1]:
                 output += "|"
@@ -122,6 +122,8 @@ class Matrix:
         return output
 
 a = Matrix()
+def eliminate(*matrix):
+    a.run(*matrix)
 # x = 4, y = 5, z = 2
 """a.run([2, 3, 7, 47],
       [3, 8, 1, 50],
@@ -131,5 +133,3 @@ a = Matrix()
       [12, 3, 18],
       [7, 3, 13],
       [105, 45, 195])"""
-a.run([5, 3, 10],
-      [12, 1, 11])

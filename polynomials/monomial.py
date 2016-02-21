@@ -1,4 +1,4 @@
-class Polynomial:
+class Monomial:
     def __init__(self, n, d=1):
         self.length = len(n[0])
         self.numerator = n
@@ -66,6 +66,32 @@ class Polynomial:
 
         # ...
         print(numerator, denominator)
+
+    def to_text(self, variables):
+        sign = ""
+        output = ""
+
+        if self.denominator == [ [1] + [0]*len(variables) ]:
+            for m in self.numerator:
+                n = m[0]
+                if n >= 0:
+                    output += "+ "
+                else:
+                    output += "- "
+                    m[0] = abs(m[0])
+                output += str(m[0])
+
+                for i, x in enumerate(m[1:]):
+                    if x != 0:
+                        if x == 1:
+                            output += "%s" % ( variables[i] )
+                        else:
+                            output += "(%s^%d)" % ( variables[i], x )
+                output += " "
+
+        if output[0] == "+":
+            output = output[2:]
+        return output[:-1]
 
     def __str__(self):
         return str(self.numerator) + " / " + str(self.denominator)
